@@ -1,11 +1,11 @@
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 
+import { Platform } from 'react-native';
 import AccountScreen from '../screens/AccountScreen';
 import DetailsScreen from '../screens/DetailsScreen';
 import FiltersScreen from '../screens/FiltersScreen';
 import OffersScreen from '../screens/OffersScreen';
 import OpinionsScreen from '../screens/OpinionsScreen';
-import { Platform } from 'react-native';
 import React from 'react';
 import TabBarIcon from '../components/TabBarIcon';
 

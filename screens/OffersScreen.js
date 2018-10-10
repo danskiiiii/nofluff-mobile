@@ -1,4 +1,4 @@
-import { Alert, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, View } from 'react-native';
 
 import OfferPreviewCard from '../components/OfferPreviewCard';
 import React from 'react';
@@ -14,6 +14,7 @@ class OffersScreen extends React.Component {
   componentDidMount() {
     this.props.dispatch(getOffers());
   }
+
   handleClickTest = () => {
     WebBrowser.openBrowserAsync(`https://www.google.com/search?q=${this.props.data[1].username}`);
     Alert.alert(JSON.stringify(this.props.data));

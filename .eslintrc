@@ -4,6 +4,7 @@
     "prettier",
     "prettier/react"
   ],
+  "parser": "babel-eslint",
   "rules": {
     "react/jsx-filename-extension": [
       1,
@@ -21,7 +22,17 @@
         "singleQuote": true,
         "printWidth": 120
       }
-    ]
+    ],
+    "import/no-named-as-default": 0,
+    "import/no-named-as-default-member": 0,
+    "react/destructuring-assignment": 0,
+    "no-use-before-define": 0,
+    "react/prop-types": 0,
+    "react/prefer-stateless-function": 0,
+    "no-return-assign": 0,
+    "import/order": 0,
+    "global-require": 0,
+    "prefer-destructuring": 0
   },
   "plugins": [
     "prettier"

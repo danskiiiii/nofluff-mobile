@@ -1,4 +1,4 @@
-import * as types from '../';
+import * as types from '..';
 
 import axios from 'axios';
 

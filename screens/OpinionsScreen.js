@@ -6,6 +6,7 @@ class OpinionsScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
   render() {
     return <Text style={styles.container}>TODO ...</Text>;
   }

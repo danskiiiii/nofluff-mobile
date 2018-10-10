@@ -2,25 +2,23 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import React from 'react';
 
-const OfferPreviewCard = ({ onPress, text1, text2 }) => {
-  return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          resizeMode="contain"
-          style={styles.logo}
-          source={{ uri: 'https://nofluffjobs.com/upload/listing/Egnyte_20141107_131448.jpeg' }}
-        />
-      </View>
-      <Text allowFontScaling minimumFontScale={0.5} numberOfLines={1} style={styles.textTitle}>
-        {text1} @ {text2}
-      </Text>
-      <Text numberOfLines={1} style={styles.textLocation}>
-        {text1}
-      </Text>
-    </TouchableOpacity>
-  );
-};
+const OfferPreviewCard = ({ onPress, text1, text2 }) => (
+  <TouchableOpacity onPress={onPress} style={styles.container}>
+    <View style={styles.imageContainer}>
+      <Image
+        resizeMode="contain"
+        style={styles.logo}
+        source={{ uri: 'https://nofluffjobs.com/upload/listing/Egnyte_20141107_131448.jpeg' }}
+      />
+    </View>
+    <Text allowFontScaling minimumFontScale={0.5} numberOfLines={1} style={styles.textTitle}>
+      {text1} @ {text2}
+    </Text>
+    <Text numberOfLines={1} style={styles.textLocation}>
+      {text1}
+    </Text>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   container: {
