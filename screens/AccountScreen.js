@@ -21,7 +21,7 @@ class AccountScreen extends React.Component {
         <View style={styles.imageContainer}>
           <Image resizeMode="contain" style={styles.logo} source={require('../assets/images/logo.png')} />
         </View>
-        <TouchableOpacity onPress={() => this.setState({ register: !this.state.register })}>
+        <TouchableOpacity onPress={() => this.setState(prevState => ({ register: !prevState.register }))}>
           <Text style={styles.noAccountText}>{this.state.register ? 'Back to login.' : 'No account? Tap here.'}</Text>
         </TouchableOpacity>
         <View>

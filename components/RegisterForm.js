@@ -20,6 +20,7 @@ class RegisterFrom extends React.Component {
         <StatusBar barStyle="light-content" />
         <TextInput
           placeholder="Email"
+          underlineColorAndroid="transparent"
           style={styles.input}
           autoCapitalize="none"
           onSubmitEditing={() => this.passwordInput.focus()}
@@ -33,6 +34,7 @@ class RegisterFrom extends React.Component {
 
         <TextInput
           placeholder="Password"
+          underlineColorAndroid="transparent"
           style={styles.input}
           returnKeyType="next"
           ref={input => (this.passwordInput = input)}
@@ -45,6 +47,7 @@ class RegisterFrom extends React.Component {
 
         <TextInput
           placeholder="Repeat password"
+          underlineColorAndroid="transparent"
           style={styles.input}
           returnKeyType="go"
           ref={input => (this.passwordInputRepeat = input)}

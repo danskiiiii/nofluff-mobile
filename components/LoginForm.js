@@ -15,23 +15,25 @@ class LoginForm extends React.Component {
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <TextInput
+          placeholder="Email"
+          underlineColorAndroid="transparent"
           style={styles.input}
           autoCapitalize="none"
           onSubmitEditing={() => this.passwordInput.focus()}
           autoCorrect={false}
           keyboardType="email-address"
           returnKeyType="next"
-          placeholder="Email"
           placeholderTextColor="rgba(0,0,0,0.35)"
           value={this.state.email}
           onChangeText={email => this.setState({ email })}
         />
 
         <TextInput
+          placeholder="Password"
+          underlineColorAndroid="transparent"
           style={styles.input}
           returnKeyType="go"
           ref={input => (this.passwordInput = input)}
-          placeholder="Password"
           placeholderTextColor="rgba(0,0,0,0.35)"
           secureTextEntry
           value={this.state.password}

@@ -8,15 +8,18 @@ class FiltersScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
   constructor(props) {
     super(props);
     this.state = { location: '', experience: '' };
   }
+
   onFilterPress = () => {
     store
       .dispatch(getOffers(this.state.location, this.state.experience))
       .then(() => this.props.navigation.navigate('Offers'));
   };
+
   render() {
     return (
       <View style={styles.container}>
