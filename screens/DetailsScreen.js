@@ -9,7 +9,6 @@ class DetailsScreen extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const offerId = navigation.getParam('offerId', '');
     const data = navigation.getParam('data') && JSON.parse(navigation.getParam('data'));
 
     return (
@@ -27,7 +26,7 @@ class DetailsScreen extends React.Component {
               />
             </View>
             <Text style={styles.textTitle}>
-              {offerId} {data.username} {data.name} {JSON.stringify(data)}
+              {data.title} @ {data.company} {data.description} Salary: {data.salary_low}-{data.salary_high}
             </Text>
           </View>
         ) : (

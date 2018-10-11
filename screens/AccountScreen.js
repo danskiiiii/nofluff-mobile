@@ -1,4 +1,4 @@
-import { Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import LoginForm from '../components/LoginForm';
 import React from 'react';
@@ -9,25 +9,42 @@ class AccountScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
   constructor(props) {
     super(props);
     this.state = { register: false };
   }
+
+  // onButtonPress = () => {
+  //   this.props.dispatch(userLogin());
+  // };
+
   render() {
-    const { logged } = this.props;
+    const { isLoggedIn, isPendingLogin, isPendingRegistration } = this.props.auth;
 
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <View style={styles.imageContainer}>
-          <Image resizeMode="contain" style={styles.logo} source={require('../assets/images/logo.png')} />
-        </View>
-        <TouchableOpacity onPress={() => this.setState(prevState => ({ register: !prevState.register }))}>
-          <Text style={styles.noAccountText}>{this.state.register ? 'Back to login.' : 'No account? Tap here.'}</Text>
-        </TouchableOpacity>
-        <View>
-          {!logged && !this.state.register && <LoginForm />}
-          {this.state.register && <RegisterForm />}
-        </View>
+        {!isLoggedIn && [
+          <View key="bigLogo" style={styles.imageContainer}>
+            <Image resizeMode="contain" style={styles.logo} source={require('../assets/images/logo.png')} />
+          </View>,
+          <TouchableOpacity
+            key="switchButton"
+            onPress={() => this.setState(prevState => ({ register: !prevState.register }))}>
+            <Text style={styles.noAccountText}>{this.state.register ? 'Back to login.' : 'No account? Tap here.'}</Text>
+          </TouchableOpacity>,
+          <View key="switchForm">
+            {!this.state.register && <LoginForm />}
+            {this.state.register && <RegisterForm />}
+            {(isPendingLogin || isPendingRegistration) && <ActivityIndicator />}
+          </View>,
+        ]}
+        {isLoggedIn && (
+          <View style={styles.imageContainer}>
+            <Image resizeMode="contain" style={styles.logo} source={require('../assets/images/logo.png')} />
+            <ActivityIndicator size="large" color="#2980b6" />
+          </View>
+        )}
       </KeyboardAvoidingView>
     );
   }
@@ -60,7 +77,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
   return {
-    logged: state.auth.isLoggedIn,
+    auth: state.auth,
   };
 }
 

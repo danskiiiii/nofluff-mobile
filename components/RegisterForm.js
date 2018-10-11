@@ -1,19 +1,31 @@
 import { Alert, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { validateEmail, validatePassword } from '../helpers';
 
 import React from 'react';
+import store from '../store';
+import { userRegistration } from '../actions/creators/auth';
 
 class RegisterFrom extends React.Component {
   constructor(props) {
     super(props);
     this.state = { email: '', password: '', passwordRepeat: '' };
   }
-  onButtonPress = () => {
-    if (this.state.password !== this.state.passwordRepeat) {
-      Alert.alert('err');
-    } else {
-      Alert.alert('ok');
+
+  onRegisterPress = () => {
+    const { email, password, passwordRepeat } = this.state;
+
+    if (password !== passwordRepeat) {
+      return Alert.alert('Passwords do not match');
     }
+    if (!validateEmail(email)) {
+      return Alert.alert('Please enter a valid e-mail');
+    }
+    if (!validatePassword(password)) {
+      return Alert.alert('Please enter a valid password.');
+    }
+    store.dispatch(userRegistration(email, password, 'TEMP NAME WTF???'));
   };
+
   render() {
     return (
       <View style={styles.container}>
@@ -57,7 +69,7 @@ class RegisterFrom extends React.Component {
           onChangeText={passwordRepeat => this.setState({ passwordRepeat })}
         />
 
-        <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={this.onRegisterPress}>
           <Text style={styles.buttonText}>REGISTER</Text>
         </TouchableOpacity>
       </View>

@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import React from 'react';
 
-const OfferPreviewCard = ({ onPress, text1, text2 }) => (
+const OfferPreviewCard = ({ onPress, title, company, location }) => (
   <TouchableOpacity onPress={onPress} style={styles.container}>
     <View style={styles.imageContainer}>
       <Image
@@ -12,10 +12,10 @@ const OfferPreviewCard = ({ onPress, text1, text2 }) => (
       />
     </View>
     <Text allowFontScaling minimumFontScale={0.5} numberOfLines={1} style={styles.textTitle}>
-      {text1} @ {text2}
+      {title} @ {company}
     </Text>
     <Text numberOfLines={1} style={styles.textLocation}>
-      {text1}
+      {location}
     </Text>
   </TouchableOpacity>
 );
