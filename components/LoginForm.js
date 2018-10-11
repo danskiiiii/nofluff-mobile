@@ -1,15 +1,28 @@
 import { Alert, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { validateEmail, validatePassword } from '../helpers';
 
 import React from 'react';
+import store from '../store';
+import { userLogin } from '../actions/creators/auth';
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '' };
+    this.state = { email: 'admin@admin.com', password: 'Temp1234' };
   }
-  onButtonPress = () => {
-    Alert.alert(JSON.stringify(this.state), 'foo');
+
+  onLoginPress = () => {
+    const { email, password } = this.state;
+
+    if (!validateEmail(email)) {
+      return Alert.alert('Please enter a valid e-mail');
+    }
+    if (!validatePassword(password)) {
+      return Alert.alert('Please enter a valid password');
+    }
+    store.dispatch(userLogin(email, password));
   };
+
   render() {
     return (
       <View style={styles.container}>
@@ -40,7 +53,7 @@ class LoginForm extends React.Component {
           onChangeText={password => this.setState({ password })}
         />
 
-        <TouchableOpacity style={styles.buttonContainer} onPress={this.onButtonPress}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={this.onLoginPress}>
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
       </View>

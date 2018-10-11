@@ -26,14 +26,10 @@ class OffersScreen extends React.Component {
     return data.map(element => (
       <OfferPreviewCard
         key={element.id}
-        text1={element.name}
-        text2={element.username}
-        onPress={() =>
-          navigate('Details', {
-            offerId: element.id,
-            data: JSON.stringify(element),
-          })
-        }
+        title={element.title}
+        company={element.company}
+        location={element.location}
+        onPress={() => navigate('Details', { data: JSON.stringify(element) })}
       />
     ));
   };

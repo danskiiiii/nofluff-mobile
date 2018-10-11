@@ -32,7 +32,8 @@
     "no-return-assign": 0,
     "import/order": 0,
     "global-require": 0,
-    "prefer-destructuring": 0
+    "prefer-destructuring": 0,
+    "consistent-return": 0
   },
   "plugins": [
     "prettier"
