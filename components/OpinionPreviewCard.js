@@ -2,17 +2,22 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import React from 'react';
 
-const OfferPreviewCard = ({ onPress, title, company, location, logoUri }) => (
+const OpinionPreviewCard = ({ onPress, company, location, logoUri, rating }) => (
   <TouchableOpacity onPress={onPress} style={styles.container}>
     <View style={styles.imageContainer}>
       <Image resizeMode="contain" style={styles.logo} source={{ uri: logoUri }} />
     </View>
     <Text allowFontScaling minimumFontScale={0.5} numberOfLines={1} style={styles.textTitle}>
-      {title} @ {company}
+      {company}
     </Text>
-    <Text numberOfLines={1} style={styles.textLocation}>
-      {location}
-    </Text>
+    <View style={styles.bottomContainer}>
+      <Text numberOfLines={1} style={styles.textLocation}>
+        {location}
+      </Text>
+      <Text numberOfLines={1} style={styles.textLocation}>
+        {rating ? `Rating: ${rating.toFixed(2)}` : 'Not rated yet'}
+      </Text>
+    </View>
   </TouchableOpacity>
 );
 
@@ -21,14 +26,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
     borderLeftWidth: 6,
-    borderColor: '#2980b6',
+    borderColor: '#0aa69a',
     marginTop: 6,
     marginLeft: 6,
     marginRight: 10,
   },
   imageContainer: {
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     height: 45,
   },
   logo: {
@@ -43,13 +48,16 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     paddingTop: 5,
   },
+  bottomContainer: { flexDirection: 'row', justifyContent: 'space-between' },
   textLocation: {
-    alignSelf: 'center',
+    justifyContent: 'flex-start',
+    alignSelf: 'flex-end',
+    marginLeft: 4,
     color: 'grey',
     fontSize: 12,
     fontWeight: '100',
-    paddingBottom: 10,
+    padding: 10,
   },
 });
 
-export default OfferPreviewCard;
+export default OpinionPreviewCard;

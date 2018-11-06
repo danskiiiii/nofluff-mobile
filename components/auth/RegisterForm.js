@@ -1,9 +1,9 @@
 import { Alert, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { validateEmail, validatePassword } from '../helpers';
+import { validateEmail, validatePassword } from '../../helpers';
 
 import React from 'react';
-import store from '../store';
-import { userRegistration } from '../actions/creators/auth';
+import store from '../../store';
+import { userRegistration } from '../../actions/creators/auth';
 
 class RegisterFrom extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class RegisterFrom extends React.Component {
     if (!validatePassword(password)) {
       return Alert.alert('Please enter a valid password.');
     }
-    store.dispatch(userRegistration(email, password, 'TEMP NAME WTF???'));
+    store.dispatch(userRegistration(email, password, 'TODO name'));
   };
 
   render() {
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    backgroundColor: 'rgba(0,225,225,0.2)',
+    backgroundColor: '#0aa69a80',
     marginBottom: 10,
     padding: 10,
     color: '#000',
