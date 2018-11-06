@@ -1,9 +1,9 @@
 import { Alert, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { validateEmail, validatePassword } from '../helpers';
+import { validateEmail, validatePassword } from '../../helpers';
 
 import React from 'react';
-import store from '../store';
-import { userLogin } from '../actions/creators/auth';
+import store from '../../store';
+import { userLogin } from '../../actions/creators/auth';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -54,7 +54,7 @@ class LoginForm extends React.Component {
         />
 
         <TouchableOpacity style={styles.buttonContainer} onPress={this.onLoginPress}>
-          <Text style={styles.buttonText}>LOGIN</Text>
+          <Text style={styles.buttonText}>LOG IN</Text>
         </TouchableOpacity>
       </View>
     );
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    backgroundColor: 'rgba(0,225,225,0.2)',
+    backgroundColor: '#0aa69a80',
     marginBottom: 10,
     padding: 10,
     color: '#000',

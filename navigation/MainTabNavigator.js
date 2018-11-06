@@ -7,23 +7,25 @@ import OffersScreen from '../screens/OffersScreen';
 import OpinionsScreen from '../screens/OpinionsScreen';
 import { Platform } from 'react-native';
 import React from 'react';
-import TabBarIcon from '../components/TabBarIcon';
+import TabBarIcon from '../components/nav/TabBarIcon';
+import TabBarLabel from '../components/nav/TabBarLabel';
 
 const OffersStack = createStackNavigator({
   Offers: OffersScreen,
 });
 
 OffersStack.navigationOptions = {
-  tabBarLabel: 'Offers',
+  tabBarLabel: ({ focused }) => <TabBarLabel title="Offers" focused={focused} />,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? `ios-list${focused ? '' : '-outline'}` : 'md-list'} />
   ),
 };
+
 const FiltersStack = createStackNavigator({
   Filters: FiltersScreen,
 });
 FiltersStack.navigationOptions = {
-  tabBarLabel: 'Filters',
+  tabBarLabel: ({ focused }) => <TabBarLabel title="Filters" focused={focused} />,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -31,30 +33,17 @@ FiltersStack.navigationOptions = {
     />
   ),
 };
+
 const DetailsStack = createStackNavigator({
   Details: DetailsScreen,
 });
 
 DetailsStack.navigationOptions = {
-  tabBarLabel: 'Details',
+  tabBarLabel: ({ focused }) => <TabBarLabel title="Details" focused={focused} />,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? `ios-information-circle${focused ? '' : '-outline'}` : 'md-information-circle'}
-    />
-  ),
-};
-
-const AccountStack = createStackNavigator({
-  Account: AccountScreen,
-});
-
-AccountStack.navigationOptions = {
-  tabBarLabel: 'Account',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-person${focused ? '' : '-outline'}` : 'md-person'}
     />
   ),
 };
@@ -64,7 +53,7 @@ const OpinionsStack = createStackNavigator({
 });
 
 OpinionsStack.navigationOptions = {
-  tabBarLabel: 'Opinions',
+  tabBarLabel: ({ focused }) => <TabBarLabel title="Opinions" focused={focused} />,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -73,10 +62,31 @@ OpinionsStack.navigationOptions = {
   ),
 };
 
-export default createBottomTabNavigator({
-  OffersStack,
-  FiltersStack,
-  DetailsStack,
-  OpinionsStack,
-  AccountStack,
+const AccountStack = createStackNavigator({
+  Account: AccountScreen,
 });
+
+AccountStack.navigationOptions = {
+  tabBarLabel: ({ focused }) => <TabBarLabel title="Account" focused={focused} />,
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? `ios-person${focused ? '' : '-outline'}` : 'md-person'}
+    />
+  ),
+};
+
+export default createBottomTabNavigator(
+  {
+    OffersStack,
+    FiltersStack,
+    DetailsStack,
+    OpinionsStack,
+    AccountStack,
+  },
+  {
+    tabBarOptions: {
+      style: { height: 42 },
+    },
+  }
+);

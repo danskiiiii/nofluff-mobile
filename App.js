@@ -11,45 +11,43 @@ export default class App extends React.Component {
     isLoadingComplete: false,
   };
 
-  render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
-      return (
-        <Provider store={store}>
-          <AppLoading
-            startAsync={this._loadResourcesAsync}
-            onError={this._handleLoadingError}
-            onFinish={this._handleFinishLoading}
-          />
-        </Provider>
-      );
-    } else {
-      return (
-        <Provider store={store}>
-          <View style={styles.container}>
-            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            <AppNavigator />
-          </View>
-        </Provider>
-      );
-    }
-  }
-
-  _loadResourcesAsync = async () => {
-    return Promise.all([
+  loadResourcesAsync = async () =>
+    Promise.all([
       Font.loadAsync({
         ...Icon.Ionicons.font,
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
       }),
     ]);
-  };
 
-  _handleLoadingError = error => {
+  handleLoadingError = error => {
     console.warn(error);
   };
 
-  _handleFinishLoading = () => {
+  handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
   };
+
+  render() {
+    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+      return (
+        <Provider store={store}>
+          <AppLoading
+            startAsync={this.loadResourcesAsync}
+            onError={this.handleLoadingError}
+            onFinish={this.handleFinishLoading}
+          />
+        </Provider>
+      );
+    }
+    return (
+      <Provider store={store}>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <AppNavigator />
+        </View>
+      </Provider>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

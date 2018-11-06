@@ -1,6 +1,9 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Image, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 
+import OfferDetail from '../components/details/OfferDetail';
+import OpinionDetail from '../components/details/OpinionDetail';
 import React from 'react';
+import { connect } from 'react-redux';
 
 class DetailsScreen extends React.Component {
   static navigationOptions = {
@@ -8,31 +11,34 @@ class DetailsScreen extends React.Component {
   };
 
   render() {
-    const { navigation } = this.props;
+    const { isLoading, navigation } = this.props;
     const data = navigation.getParam('data') && JSON.parse(navigation.getParam('data'));
-
+    const type = navigation.getParam('type');
     return (
-      <View style={styles.container}>
-        <View style={styles.imageContainer}>
-          <Image resizeMode="contain" style={styles.logo} source={require('../assets/images/logo.png')} />
-        </View>
-        {data ? (
-          <View>
-            <View style={styles.imageContainer}>
-              <Image
-                resizeMode="contain"
-                style={styles.logo}
-                source={{ uri: 'https://nofluffjobs.com/upload/listing/Egnyte_20141107_131448.jpeg' }}
-              />
-            </View>
-            <Text style={styles.textTitle}>
-              {data.title} @ {data.company} {data.description} Salary: {data.salary_low}-{data.salary_high}
-            </Text>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        {type && (
+          <View style={styles.imageContainer}>
+            <Image resizeMode="contain" style={styles.logo} source={require('../assets/images/logo.png')} />
           </View>
-        ) : (
-          <Text> TODO no offer selected</Text>
         )}
-      </View>
+
+        {isLoading && (
+          <View style={styles.bigImageContainer}>
+            <ActivityIndicator style={styles.bigLogo} size="large" color="#2980b6" />
+          </View>
+        )}
+
+        {!isLoading && type === 'offer' && <OfferDetail data={data} type={type} />}
+
+        {!isLoading && type === 'opinion' && <OpinionDetail data={data} type={type} />}
+
+        {!isLoading &&
+          type === undefined && (
+            <View style={styles.bigImageContainer}>
+              <Image resizeMode="contain" style={styles.bigLogo} source={require('../assets/images/logo.png')} />
+            </View>
+          )}
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -45,12 +51,35 @@ const styles = StyleSheet.create({
   imageContainer: {
     alignItems: 'center',
     height: 60,
+    borderBottomWidth: 1,
+    borderColor: '#c1c1c1',
   },
   logo: {
     bottom: 0,
     width: 150,
     height: 80,
   },
-  textTitle: { marginTop: 20, fontSize: 20 },
+  bigImageContainer: {
+    alignItems: 'center',
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  bigLogo: {
+    position: 'absolute',
+    width: 300,
+    height: 100,
+  },
+  spinner: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+  },
 });
-export default DetailsScreen;
+
+function mapStateToProps(state) {
+  return {
+    isLoading: state.ratings.loading,
+  };
+}
+
+export default connect(mapStateToProps)(DetailsScreen);
