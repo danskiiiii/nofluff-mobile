@@ -1,6 +1,7 @@
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
+import { createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation';
 
 import AccountScreen from '../screens/AccountScreen';
+import Colors from '../constants/Colors';
 import DetailsScreen from '../screens/DetailsScreen';
 import FiltersScreen from '../screens/FiltersScreen';
 import OffersScreen from '../screens/OffersScreen';
@@ -8,14 +9,13 @@ import OpinionsScreen from '../screens/OpinionsScreen';
 import { Platform } from 'react-native';
 import React from 'react';
 import TabBarIcon from '../components/nav/TabBarIcon';
-import TabBarLabel from '../components/nav/TabBarLabel';
 
 const OffersStack = createStackNavigator({
   Offers: OffersScreen,
 });
 
 OffersStack.navigationOptions = {
-  tabBarLabel: ({ focused }) => <TabBarLabel title="Offers" focused={focused} />,
+  tabBarLabel: 'Offers',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? `ios-list${focused ? '' : '-outline'}` : 'md-list'} />
   ),
@@ -25,7 +25,7 @@ const FiltersStack = createStackNavigator({
   Filters: FiltersScreen,
 });
 FiltersStack.navigationOptions = {
-  tabBarLabel: ({ focused }) => <TabBarLabel title="Filters" focused={focused} />,
+  tabBarLabel: 'Filters',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -39,7 +39,7 @@ const DetailsStack = createStackNavigator({
 });
 
 DetailsStack.navigationOptions = {
-  tabBarLabel: ({ focused }) => <TabBarLabel title="Details" focused={focused} />,
+  tabBarLabel: 'Details',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -53,7 +53,7 @@ const OpinionsStack = createStackNavigator({
 });
 
 OpinionsStack.navigationOptions = {
-  tabBarLabel: ({ focused }) => <TabBarLabel title="Opinions" focused={focused} />,
+  tabBarLabel: 'Opinions',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -67,7 +67,7 @@ const AccountStack = createStackNavigator({
 });
 
 AccountStack.navigationOptions = {
-  tabBarLabel: ({ focused }) => <TabBarLabel title="Account" focused={focused} />,
+  tabBarLabel: 'Account',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -76,7 +76,7 @@ AccountStack.navigationOptions = {
   ),
 };
 
-export default createBottomTabNavigator(
+export default createMaterialTopTabNavigator(
   {
     OffersStack,
     FiltersStack,
@@ -86,7 +86,29 @@ export default createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      style: { height: 42 },
+      showIcon: true,
+      showLabel: true,
+      backBehavior: 'initialRoute',
+      activeTintColor: Colors.tabSelected,
+      inactiveTintColor: Colors.tabDefaultLabel,
+      style: {
+        display: 'flex',
+        height: 46,
+        backgroundColor: '#fff',
+      },
+      labelStyle: {
+        fontSize: 10,
+        textAlign: 'center',
+        marginTop: 2,
+      },
+      iconStyle: { marginTop: -6 },
+      indicatorStyle: {
+        backgroundColor: Colors.tabSelected,
+      },
+      upperCaseLabel: false,
     },
+    tabBarPosition: 'bottom',
+    animationEnabled: true,
+    swipeEnabled: true,
   }
 );
