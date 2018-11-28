@@ -16,11 +16,21 @@ import React from 'react';
 import StarRating from 'react-native-star-rating';
 import { connect } from 'react-redux';
 import { sendApplication } from '../../actions/creators/offers';
+import { withNavigation } from 'react-navigation';
 
 class OfferDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = { applicationTitle: `${props.data.title} - ${props.email}`, applicationText: '' };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.email !== this.props.email) {
+      this.setState({ applicationTitle: `${this.props.data.title} - ${this.props.email}` });
+    }
+    if (prevProps.data !== this.props.data) {
+      this.setState({ applicationTitle: `${this.props.data.title} - ${this.props.email}` });
+    }
   }
 
   renderTools = () => {
@@ -41,7 +51,7 @@ class OfferDetail extends React.Component {
   };
 
   render() {
-    const { data, dispatch, error, isLoggedIn, postPending } = this.props;
+    const { data, dispatch, error, isLoggedIn, postPending, navigation } = this.props;
     return (
       <KeyboardAvoidingView style={styles.container} behavior="position">
         <View style={styles.imageContainer}>
@@ -78,15 +88,18 @@ class OfferDetail extends React.Component {
               style={styles.submitBtn}
               onPress={() => {
                 dispatch(sendApplication(data.id, this.state.applicationTitle, this.state.applicationText));
-                this.setState({ applicationTitle: '', applicationText: '' });
+                this.setState({ applicationText: '' });
               }}>
               {!postPending && <Text style={styles.btnText}>APPLY</Text>}
               {postPending && <ActivityIndicator />}
             </TouchableOpacity>
           </View>
         )}
-
-        {!isLoggedIn && <Text style={styles.textCentered}>Log in to apply</Text>}
+        {!isLoggedIn && (
+          <TouchableOpacity onPress={() => navigation.navigate('Account')}>
+            <Text style={styles.toLoginBtn}>Log in to apply</Text>
+          </TouchableOpacity>
+        )}
         {error &&
           Alert.alert(
             'Something went wrong :(',
@@ -111,6 +124,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    justifyContent: 'space-around',
   },
   stars: { justifyContent: 'flex-start' },
   tools: { padding: 10 },
@@ -132,7 +146,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#2980b6',
     paddingVertical: 12,
     width: 100,
+    marginTop: 20,
     alignSelf: 'center',
+  },
+  toLoginBtn: {
+    textAlign: 'center',
+    backgroundColor: '#d8d8d8',
+    marginLeft: 20,
+    marginRight: 20,
+    paddingVertical: 6,
   },
   btnText: {
     textAlign: 'center',
@@ -149,4 +171,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(OfferDetail);
+export default withNavigation(connect(mapStateToProps)(OfferDetail));

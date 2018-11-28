@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, StyleSheet, View } from 'react-native';
 
 import OfferDetail from '../components/details/OfferDetail';
 import OpinionDetail from '../components/details/OpinionDetail';
@@ -15,7 +15,7 @@ class DetailsScreen extends React.Component {
     const data = navigation.getParam('data') && JSON.parse(navigation.getParam('data'));
     const type = navigation.getParam('type');
     return (
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <ScrollView style={styles.container}>
         {type && (
           <View style={styles.imageContainer}>
             <Image resizeMode="contain" style={styles.logo} source={require('../assets/images/logo.png')} />
@@ -38,7 +38,7 @@ class DetailsScreen extends React.Component {
               <Image resizeMode="contain" style={styles.bigLogo} source={require('../assets/images/logo.png')} />
             </View>
           )}
-      </KeyboardAvoidingView>
+      </ScrollView>
     );
   }
 }

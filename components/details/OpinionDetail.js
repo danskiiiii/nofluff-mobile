@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,6 +17,7 @@ import StarRating from 'react-native-star-rating';
 import { WebBrowser } from 'expo';
 import { connect } from 'react-redux';
 import { postReview } from '../../actions/creators/ratings';
+import { withNavigation } from 'react-navigation';
 
 class OpinionDetail extends React.Component {
   constructor(props) {
@@ -41,10 +43,10 @@ class OpinionDetail extends React.Component {
   };
 
   render() {
-    const { data, dispatch, error, isLoggedIn, postPending } = this.props;
+    const { data, dispatch, error, isLoggedIn, navigation, postPending } = this.props;
 
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="position">
         <View style={styles.imageContainer}>
           <Image resizeMode="contain" style={styles.logo} source={{ uri: data.logo }} />
           {data.rating && (
@@ -65,7 +67,6 @@ class OpinionDetail extends React.Component {
         <TouchableOpacity style={styles.websiteBtn} onPress={() => WebBrowser.openBrowserAsync(data.site_url)}>
           <Text style={styles.btnText}>Visit website</Text>
         </TouchableOpacity>
-
         <ScrollView horizontal>{this.renderReviews()}</ScrollView>
         {isLoggedIn && (
           <View>
@@ -73,6 +74,9 @@ class OpinionDetail extends React.Component {
               placeholder="Write a review..."
               underlineColorAndroid="transparent"
               style={styles.input}
+              multiline
+              numberOfLines={4}
+              maxHeight={80}
               autoCapitalize="none"
               autoCorrect={false}
               placeholderTextColor="rgba(0,0,0,0.35)"
@@ -100,7 +104,11 @@ class OpinionDetail extends React.Component {
             </View>
           </View>
         )}
-        {!isLoggedIn && <Text style={styles.textCentered}>Log in to submit a review</Text>}
+        {!isLoggedIn && (
+          <TouchableOpacity onPress={() => navigation.navigate('Account')}>
+            <Text style={styles.toLoginBtn}>Log in to submit a review</Text>
+          </TouchableOpacity>
+        )}
         {error &&
           Alert.alert(
             'Something went wrong :(',
@@ -116,7 +124,7 @@ class OpinionDetail extends React.Component {
               },
             ]
           )}
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -173,6 +181,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#0aa69a',
     paddingVertical: 6,
   },
+  toLoginBtn: {
+    textAlign: 'center',
+    backgroundColor: '#d8d8d8',
+    marginLeft: 20,
+    marginRight: 20,
+    paddingVertical: 6,
+  },
 });
 
 function mapStateToProps(state) {
@@ -184,4 +199,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(OpinionDetail);
+export default withNavigation(connect(mapStateToProps)(OpinionDetail));
