@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
@@ -19,7 +20,7 @@ import { sendApplication } from '../../actions/creators/offers';
 class OfferDetail extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { applicationTitle: '', applicationText: '' };
+    this.state = { applicationTitle: `${props.data.title} - ${props.email}`, applicationText: '' };
   }
 
   renderTools = () => {
@@ -42,7 +43,7 @@ class OfferDetail extends React.Component {
   render() {
     const { data, dispatch, error, isLoggedIn, postPending } = this.props;
     return (
-      <View>
+      <KeyboardAvoidingView style={styles.container} behavior="position">
         <View style={styles.imageContainer}>
           <Image resizeMode="contain" style={styles.logo} source={{ uri: data.company.logo }} />
         </View>
@@ -61,18 +62,11 @@ class OfferDetail extends React.Component {
         {isLoggedIn && (
           <View>
             <TextInput
-              placeholder="Subject..."
-              underlineColorAndroid="transparent"
-              style={styles.input}
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholderTextColor="rgba(0,0,0,0.35)"
-              value={this.state.applicationTitle}
-              onChangeText={applicationTitle => this.setState({ applicationTitle })}
-            />
-            <TextInput
               placeholder="Write something about yourself..."
               underlineColorAndroid="transparent"
+              multiline
+              numberOfLines={4}
+              maxHeight={80}
               style={styles.input}
               autoCapitalize="none"
               autoCorrect={false}
@@ -108,7 +102,7 @@ class OfferDetail extends React.Component {
               },
             ]
           )}
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -151,6 +145,7 @@ function mapStateToProps(state) {
     isLoggedIn: state.auth.token && true,
     postPending: state.offers.postPending,
     error: state.offers.error,
+    email: state.auth.email,
   };
 }
 
