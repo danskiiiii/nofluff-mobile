@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
@@ -43,7 +44,7 @@ class OpinionDetail extends React.Component {
   };
 
   render() {
-    const { data, dispatch, error, isLoggedIn, navigation, postPending } = this.props;
+    const { data, dispatch, error, isLoggedIn, navigation, postPending, postSuccessful } = this.props;
 
     return (
       <KeyboardAvoidingView style={styles.container} behavior="position">
@@ -76,7 +77,7 @@ class OpinionDetail extends React.Component {
               style={styles.input}
               multiline
               numberOfLines={4}
-              maxHeight={80}
+              maxHeight={60}
               autoCapitalize="none"
               autoCorrect={false}
               placeholderTextColor="rgba(0,0,0,0.35)"
@@ -95,6 +96,7 @@ class OpinionDetail extends React.Component {
               <TouchableOpacity
                 style={styles.submitBtn}
                 onPress={() => {
+                  Keyboard.dismiss();
                   dispatch(postReview(data.id, this.state.reviewText, this.state.rating));
                   this.setState({ rating: null, reviewText: '' });
                 }}>
@@ -104,11 +106,13 @@ class OpinionDetail extends React.Component {
             </View>
           </View>
         )}
+
         {!isLoggedIn && (
           <TouchableOpacity onPress={() => navigation.navigate('Account')}>
             <Text style={styles.toLoginBtn}>Log in to submit a review</Text>
           </TouchableOpacity>
         )}
+
         {error &&
           Alert.alert(
             'Something went wrong :(',
@@ -124,6 +128,16 @@ class OpinionDetail extends React.Component {
               },
             ]
           )}
+
+        {postSuccessful &&
+          Alert.alert(`Thank you for reviewing ${data.company_name}`, '', [
+            {
+              text: 'OK',
+              onPress: () => {
+                dispatch({ type: CLEAR_ERRORS });
+              },
+            },
+          ])}
       </KeyboardAvoidingView>
     );
   }
@@ -131,10 +145,9 @@ class OpinionDetail extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 13,
     backgroundColor: '#fff',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   textCentered: { textAlign: 'center' },
   stars: { justifyContent: 'center', alignSelf: 'center' },
@@ -147,7 +160,7 @@ const styles = StyleSheet.create({
     borderRadius: 1,
     borderColor: '#c1c1c1',
   },
-  ratingText: { padding: 5, textAlign: 'center' },
+  ratingText: { padding: 5, marginBottom: 10 },
   imageContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
@@ -184,8 +197,7 @@ const styles = StyleSheet.create({
   toLoginBtn: {
     textAlign: 'center',
     backgroundColor: '#d8d8d8',
-    marginLeft: 20,
-    marginRight: 20,
+    marginTop: 30,
     paddingVertical: 6,
   },
 });
@@ -195,6 +207,7 @@ function mapStateToProps(state) {
     opinions: state.ratings.opinions,
     isLoggedIn: state.auth.token && true,
     postPending: state.ratings.postPending,
+    postSuccessful: state.ratings.postSuccessful,
     error: state.ratings.error,
   };
 }

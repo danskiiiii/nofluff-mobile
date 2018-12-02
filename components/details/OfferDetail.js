@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
@@ -28,8 +29,8 @@ class OfferDetail extends React.Component {
     if (prevProps.email !== this.props.email) {
       this.setState({ applicationTitle: `${this.props.data.title} - ${this.props.email}` });
     }
-    if (prevProps.data !== this.props.data) {
-      this.setState({ applicationTitle: `${this.props.data.title} - ${this.props.email}` });
+    if (prevProps.data.title !== this.props.data.title) {
+      this.setState({ applicationTitle: `${this.props.data.title} - ${this.props.email}`, applicationText: '' });
     }
   }
 
@@ -51,7 +52,7 @@ class OfferDetail extends React.Component {
   };
 
   render() {
-    const { data, dispatch, error, isLoggedIn, postPending, navigation } = this.props;
+    const { data, dispatch, error, isLoggedIn, postPending, postSuccessful, navigation } = this.props;
     return (
       <KeyboardAvoidingView style={styles.container} behavior="position">
         <View style={styles.imageContainer}>
@@ -60,7 +61,9 @@ class OfferDetail extends React.Component {
         <Text style={styles.textTitle}>
           {data.title} @ {data.company.company_name}
         </Text>
-        <Text style={styles.textBody}>{data.description}</Text>
+        <ScrollView maxHeight={80}>
+          <Text style={styles.textBody}>{data.description}</Text>
+        </ScrollView>
         <Text style={styles.textBody}>
           Salary: {data.salary_low}-{data.salary_high} {data.salary_high_currency}
         </Text>
@@ -69,6 +72,7 @@ class OfferDetail extends React.Component {
         </Text>
         <Text style={styles.textBody}>Required skills:</Text>
         <ScrollView horizontal>{this.renderTools()}</ScrollView>
+
         {isLoggedIn && (
           <View>
             <TextInput
@@ -76,7 +80,7 @@ class OfferDetail extends React.Component {
               underlineColorAndroid="transparent"
               multiline
               numberOfLines={4}
-              maxHeight={80}
+              maxHeight={60}
               style={styles.input}
               autoCapitalize="none"
               autoCorrect={false}
@@ -85,8 +89,10 @@ class OfferDetail extends React.Component {
               onChangeText={applicationText => this.setState({ applicationText })}
             />
             <TouchableOpacity
+              disabled={this.state.applicationText.length === 0}
               style={styles.submitBtn}
               onPress={() => {
+                Keyboard.dismiss();
                 dispatch(sendApplication(data.id, this.state.applicationTitle, this.state.applicationText));
                 this.setState({ applicationText: '' });
               }}>
@@ -95,26 +101,32 @@ class OfferDetail extends React.Component {
             </TouchableOpacity>
           </View>
         )}
+
         {!isLoggedIn && (
           <TouchableOpacity onPress={() => navigation.navigate('Account')}>
             <Text style={styles.toLoginBtn}>Log in to apply</Text>
           </TouchableOpacity>
         )}
+
         {error &&
-          Alert.alert(
-            'Something went wrong :(',
-            error === 'Request failed with status code 403'
-              ? 'You have already posted a review for this company'
-              : error,
-            [
-              {
-                text: 'OK...',
-                onPress: () => {
-                  dispatch({ type: CLEAR_ERRORS });
-                },
+          Alert.alert('Something went wrong :(', error, [
+            {
+              text: 'OK...',
+              onPress: () => {
+                dispatch({ type: CLEAR_ERRORS });
               },
-            ]
-          )}
+            },
+          ])}
+
+        {postSuccessful &&
+          Alert.alert('Thanks for applying!', `Expect to hear from ${data.company.company_name} soon`, [
+            {
+              text: 'Yay!',
+              onPress: () => {
+                dispatch({ type: CLEAR_ERRORS });
+              },
+            },
+          ])}
       </KeyboardAvoidingView>
     );
   }
@@ -124,7 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
   },
   stars: { justifyContent: 'flex-start' },
   tools: { padding: 10 },
@@ -141,20 +153,20 @@ const styles = StyleSheet.create({
   textCentered: { textAlign: 'center', marginTop: 15 },
   input: {
     color: '#000',
+    paddingHorizontal: 13,
   },
   submitBtn: {
     backgroundColor: '#2980b6',
     paddingVertical: 12,
-    width: 100,
-    marginTop: 20,
-    alignSelf: 'center',
+    alignSelf: 'stretch',
+    marginHorizontal: 13,
   },
   toLoginBtn: {
     textAlign: 'center',
     backgroundColor: '#d8d8d8',
-    marginLeft: 20,
-    marginRight: 20,
     paddingVertical: 6,
+    marginHorizontal: 10,
+    marginTop: 30,
   },
   btnText: {
     textAlign: 'center',
@@ -166,6 +178,7 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.auth.token && true,
     postPending: state.offers.postPending,
+    postSuccessful: state.offers.postSuccessful,
     error: state.offers.error,
     email: state.auth.email,
   };
