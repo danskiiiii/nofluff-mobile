@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 
 import OfferDetail from '../components/details/OfferDetail';
 import OpinionDetail from '../components/details/OpinionDetail';
@@ -15,7 +15,7 @@ class DetailsScreen extends React.Component {
     const data = navigation.getParam('data') && JSON.parse(navigation.getParam('data'));
     const type = navigation.getParam('type');
     return (
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <View style={styles.container}>
         {type && (
           <View style={styles.imageContainer}>
             <Image resizeMode="contain" style={styles.logo} source={require('../assets/images/logo.png')} />
@@ -28,9 +28,9 @@ class DetailsScreen extends React.Component {
           </View>
         )}
 
-        {!isLoading && type === 'offer' && <OfferDetail data={data} type={type} />}
+        {!isLoading && type === 'offer' && <OfferDetail data={data} />}
 
-        {!isLoading && type === 'opinion' && <OpinionDetail data={data} type={type} />}
+        {!isLoading && type === 'opinion' && <OpinionDetail data={data} />}
 
         {!isLoading &&
           type === undefined && (
@@ -38,7 +38,7 @@ class DetailsScreen extends React.Component {
               <Image resizeMode="contain" style={styles.bigLogo} source={require('../assets/images/logo.png')} />
             </View>
           )}
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }

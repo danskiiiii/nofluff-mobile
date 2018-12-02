@@ -3,6 +3,7 @@ const tintColor = '#2980b6';
 export default {
   tintColor,
   tabDefault: '#ccc',
+  tabDefaultLabel: '#8c8c8c',
   tabSelected: tintColor,
   tabBar: '#fefefe',
   errorBackground: 'red',

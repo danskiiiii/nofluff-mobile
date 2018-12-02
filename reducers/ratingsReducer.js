@@ -16,8 +16,9 @@ export const initialState = {
   opinions: [],
   loading: false,
   loaded: false,
-  postPending: false,
   error: null,
+  postPending: false,
+  postSuccessful: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -26,6 +27,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         error: null,
+        postSuccessful: false,
       };
 
     case GET_OPINIONS_PENDING:
@@ -69,6 +71,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         postPending: false,
+        postSuccessful: true,
         opinions: [...state.opinions, action.payload],
         error: null,
       };

@@ -1,4 +1,5 @@
 import {
+  CLEAR_ERRORS,
   GET_OFFERS_FULFILLED,
   GET_OFFERS_PENDING,
   GET_OFFERS_REJECTED,
@@ -12,10 +13,19 @@ export const initialState = {
   loading: false,
   loaded: false,
   error: null,
+  postPending: false,
+  postSuccessful: false,
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+        postSuccessful: false,
+      };
+
     case GET_OFFERS_PENDING:
       return {
         ...state,
@@ -52,6 +62,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         postPending: false,
+        postSuccessful: true,
         error: null,
       };
     }

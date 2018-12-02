@@ -2,6 +2,8 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Keyboard,
+  KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
@@ -15,11 +17,21 @@ import React from 'react';
 import StarRating from 'react-native-star-rating';
 import { connect } from 'react-redux';
 import { sendApplication } from '../../actions/creators/offers';
+import { withNavigation } from 'react-navigation';
 
 class OfferDetail extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { applicationTitle: '', applicationText: '' };
+    this.state = { applicationTitle: `${props.data.title} - ${props.email}`, applicationText: '' };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.email !== this.props.email) {
+      this.setState({ applicationTitle: `${this.props.data.title} - ${this.props.email}` });
+    }
+    if (prevProps.data.title !== this.props.data.title) {
+      this.setState({ applicationTitle: `${this.props.data.title} - ${this.props.email}`, applicationText: '' });
+    }
   }
 
   renderTools = () => {
@@ -40,16 +52,18 @@ class OfferDetail extends React.Component {
   };
 
   render() {
-    const { data, dispatch, error, isLoggedIn, postPending } = this.props;
+    const { data, dispatch, error, isLoggedIn, postPending, postSuccessful, navigation } = this.props;
     return (
-      <View>
+      <KeyboardAvoidingView style={styles.container} behavior="position">
         <View style={styles.imageContainer}>
           <Image resizeMode="contain" style={styles.logo} source={{ uri: data.company.logo }} />
         </View>
         <Text style={styles.textTitle}>
           {data.title} @ {data.company.company_name}
         </Text>
-        <Text style={styles.textBody}>{data.description}</Text>
+        <ScrollView maxHeight={80}>
+          <Text style={styles.textBody}>{data.description}</Text>
+        </ScrollView>
         <Text style={styles.textBody}>
           Salary: {data.salary_low}-{data.salary_high} {data.salary_high_currency}
         </Text>
@@ -58,21 +72,15 @@ class OfferDetail extends React.Component {
         </Text>
         <Text style={styles.textBody}>Required skills:</Text>
         <ScrollView horizontal>{this.renderTools()}</ScrollView>
+
         {isLoggedIn && (
           <View>
             <TextInput
-              placeholder="Subject..."
-              underlineColorAndroid="transparent"
-              style={styles.input}
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholderTextColor="rgba(0,0,0,0.35)"
-              value={this.state.applicationTitle}
-              onChangeText={applicationTitle => this.setState({ applicationTitle })}
-            />
-            <TextInput
               placeholder="Write something about yourself..."
               underlineColorAndroid="transparent"
+              multiline
+              numberOfLines={4}
+              maxHeight={60}
               style={styles.input}
               autoCapitalize="none"
               autoCorrect={false}
@@ -81,10 +89,12 @@ class OfferDetail extends React.Component {
               onChangeText={applicationText => this.setState({ applicationText })}
             />
             <TouchableOpacity
+              disabled={this.state.applicationText.length === 0}
               style={styles.submitBtn}
               onPress={() => {
+                Keyboard.dismiss();
                 dispatch(sendApplication(data.id, this.state.applicationTitle, this.state.applicationText));
-                this.setState({ applicationTitle: '', applicationText: '' });
+                this.setState({ applicationText: '' });
               }}>
               {!postPending && <Text style={styles.btnText}>APPLY</Text>}
               {postPending && <ActivityIndicator />}
@@ -92,23 +102,32 @@ class OfferDetail extends React.Component {
           </View>
         )}
 
-        {!isLoggedIn && <Text style={styles.textCentered}>Log in to apply</Text>}
+        {!isLoggedIn && (
+          <TouchableOpacity onPress={() => navigation.navigate('Account')}>
+            <Text style={styles.toLoginBtn}>Log in to apply</Text>
+          </TouchableOpacity>
+        )}
+
         {error &&
-          Alert.alert(
-            'Something went wrong :(',
-            error === 'Request failed with status code 403'
-              ? 'You have already posted a review for this company'
-              : error,
-            [
-              {
-                text: 'OK...',
-                onPress: () => {
-                  dispatch({ type: CLEAR_ERRORS });
-                },
+          Alert.alert('Something went wrong :(', error, [
+            {
+              text: 'OK...',
+              onPress: () => {
+                dispatch({ type: CLEAR_ERRORS });
               },
-            ]
-          )}
-      </View>
+            },
+          ])}
+
+        {postSuccessful &&
+          Alert.alert('Thanks for applying!', `Expect to hear from ${data.company.company_name} soon`, [
+            {
+              text: 'Yay!',
+              onPress: () => {
+                dispatch({ type: CLEAR_ERRORS });
+              },
+            },
+          ])}
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -117,6 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    justifyContent: 'space-between',
   },
   stars: { justifyContent: 'flex-start' },
   tools: { padding: 10 },
@@ -133,12 +153,20 @@ const styles = StyleSheet.create({
   textCentered: { textAlign: 'center', marginTop: 15 },
   input: {
     color: '#000',
+    paddingHorizontal: 13,
   },
   submitBtn: {
     backgroundColor: '#2980b6',
     paddingVertical: 12,
-    width: 100,
-    alignSelf: 'center',
+    alignSelf: 'stretch',
+    marginHorizontal: 13,
+  },
+  toLoginBtn: {
+    textAlign: 'center',
+    backgroundColor: '#d8d8d8',
+    paddingVertical: 6,
+    marginHorizontal: 10,
+    marginTop: 30,
   },
   btnText: {
     textAlign: 'center',
@@ -150,8 +178,10 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.auth.token && true,
     postPending: state.offers.postPending,
+    postSuccessful: state.offers.postSuccessful,
     error: state.offers.error,
+    email: state.auth.email,
   };
 }
 
-export default connect(mapStateToProps)(OfferDetail);
+export default withNavigation(connect(mapStateToProps)(OfferDetail));
