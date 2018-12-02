@@ -1,8 +1,10 @@
 ## Start project
 Install Expo CLI:
 `npm install -g expo-cli`
+
 Install modules with:
 `npm install`
+
 Run:
 `expo start`
 
