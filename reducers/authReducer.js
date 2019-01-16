@@ -87,7 +87,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         isLoggedIn: false,
         isPendingLogin: false,
-        error: action.payload.non_field_errors[0],
+        error: action.payload,
       };
 
     default:
