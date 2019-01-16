@@ -20,6 +20,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "android": {
+      "package": "todo.text.pl"
+    },
     "ios": {
       "supportsTablet": true
     }
