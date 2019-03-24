@@ -1,6 +1,6 @@
 import * as types from '..';
 
-import { URL } from '../../constants';
+import { URL } from '../../config';
 import axios from 'axios';
 
 const AUTH_API = `${URL}:44330/auth/`;

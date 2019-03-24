@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OfferPreviewCard snapshot renders the OfferPreviewCard 1`] = `
+<View
+  accessibilityComponentType={undefined}
+  accessibilityLabel={undefined}
+  accessibilityTraits={undefined}
+  accessible={true}
+  collapsable={undefined}
+  hasTVPreferredFocus={undefined}
+  hitSlop={undefined}
+  isTVSelectable={true}
+  nativeID={undefined}
+  onLayout={undefined}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "backgroundColor": "#ffffff",
+      "borderColor": "#2980b6",
+      "borderLeftWidth": 6,
+      "flex": 1,
+      "marginLeft": 6,
+      "marginRight": 10,
+      "marginTop": 6,
+      "opacity": 1,
+    }
+  }
+  testID={undefined}
+  tvParallaxProperties={undefined}
+>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "height": 45,
+        "justifyContent": "space-around",
+      }
+    }
+  >
+    <Image
+      resizeMode="contain"
+      source={
+        Object {
+          "uri": undefined,
+        }
+      }
+      style={
+        Object {
+          "height": 35,
+          "top": 5,
+          "width": 60,
+        }
+      }
+    />
+  </View>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    minimumFontScale={0.5}
+    numberOfLines={1}
+    style={
+      Object {
+        "alignSelf": "center",
+        "color": "black",
+        "fontSize": 16,
+        "fontWeight": "400",
+        "paddingTop": 5,
+      }
+    }
+  >
+     @ 
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    ellipsizeMode="tail"
+    numberOfLines={1}
+    style={
+      Object {
+        "alignSelf": "center",
+        "color": "grey",
+        "fontSize": 12,
+        "fontWeight": "100",
+        "paddingBottom": 10,
+      }
+    }
+  />
+</View>
+`;

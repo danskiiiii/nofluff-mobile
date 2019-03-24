@@ -16,10 +16,12 @@ import React from 'react';
 import RegisterForm from '../components/auth/RegisterForm';
 import { connect } from 'react-redux';
 
-class AccountScreen extends React.Component {
+export class AccountScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
+
+  static defaultProps = { auth: {} };
 
   constructor(props) {
     super(props);

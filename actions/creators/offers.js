@@ -1,6 +1,6 @@
 import * as types from '..';
 
-import { URL } from '../../constants';
+import { URL } from '../../config';
 import axios from 'axios';
 import store from '../../store';
 

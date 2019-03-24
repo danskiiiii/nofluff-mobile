@@ -1,4 +1,4 @@
-import Colors from '../../constants/Colors';
+import Colors from '../../config/Colors';
 import { Icon } from 'expo';
 import React from 'react';
 

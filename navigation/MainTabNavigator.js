@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation';
 
 import AccountScreen from '../screens/AccountScreen';
-import Colors from '../constants/Colors';
+import Colors from '../config/Colors';
 import DetailsScreen from '../screens/DetailsScreen';
 import FiltersScreen from '../screens/FiltersScreen';
 import OffersScreen from '../screens/OffersScreen';

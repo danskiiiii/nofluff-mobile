@@ -5,7 +5,7 @@ import OpinionDetail from '../components/details/OpinionDetail';
 import React from 'react';
 import { connect } from 'react-redux';
 
-class DetailsScreen extends React.Component {
+export class DetailsScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
