@@ -23,6 +23,7 @@
         "printWidth": 120
       }
     ],
+    "import/no-extraneous-dependencies": [2 , { "devDependencies": true }],
     "import/no-named-as-default": 0,
     "import/no-named-as-default-member": 0,
     "react/destructuring-assignment": 0,
@@ -37,5 +38,8 @@
   },
   "plugins": [
     "prettier"
-  ]
+  ],
+  "env": {
+    "jest": true
+  }
 }
