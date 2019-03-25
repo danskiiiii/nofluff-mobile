@@ -1,3 +1,10 @@
+# nofluff-mobile
+This React Native app is a mobile hybrid of
+
+https://nofluffjobs.com and https://justjoin.it
+
+Work in progress...
+
 ## Start project
 Install Expo CLI:
 `npm install -g expo-cli`
